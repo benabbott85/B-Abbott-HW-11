@@ -1,0 +1,19 @@
+{
+  "name": "b-abbott-hw-11",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benabbott85/B-Abbott-HW-11.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/benabbott85/B-Abbott-HW-11/issues"
+  },
+  "homepage": "https://github.com/benabbott85/B-Abbott-HW-11#readme"
+}

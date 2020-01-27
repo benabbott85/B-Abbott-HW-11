@@ -13,7 +13,7 @@ function userInput(){
         name: "askName",
     }
     ).then(function (response){
-        employeeArray.push(response.teamName);
+        employeeArray.push(response.askName);
         statusEmployee();
     })
 }
@@ -25,13 +25,17 @@ function statusEmployee(){
             type: "input",
             message: "What would you like to to with this Team Member?",
             name: "addName",
-            choices: ["Add", "Remove", "Update"]
+            choices: ["Add", "Remove", "Update", "View All"]
         }).then(function (response){
             if(response.addName === "Add"){
                 addQuestions();
             } else if (response.addName === "Remove"){
                 removeQuestions();
-            } else {
+            
+            } else if (response.addName === "View All"){
+                viewQuestions();
+            }
+            else {
                 updateQuestions();
             }
         });
@@ -133,11 +137,39 @@ function updateQuestions (){
 
     ]).then(function (response){
         const update = new Update(response.updateRole, response.updateSalary, response.updateContinue);
-        emplpoyeeArray.push(update);
+        employeeArray.push(update);
         if (response.updateContinue === "no"){
             afterPrompts();
         } else {
             statusEmployee();
         }
     });
+}
+
+function viewEmployees(){
+    inquirer
+    .prompt([
+        {
+            type: "input",
+            message: "Would you like to view all employees at this company?",
+            name: "viewAll",
+            choices: ["yes", "no"]
+        },
+        {
+            type:"input",
+            message: "Would you like to add, remove, or update another employee?",
+            name: "viewContinue",
+            choices: ["yes", "no"]
+        }
+
+    ]) .then (function (response){
+        const view = new View (response.viewAll, response.viewContinue);
+        employeeArray.push(view);
+        if (response.viewContinue === "no"){
+            afterPrompts();
+        } else {
+            statusEmployee();
+        }
+
+    })
 }
