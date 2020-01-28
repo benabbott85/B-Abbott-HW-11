@@ -233,3 +233,14 @@ function viewRole (){
         }
     })
 }
+
+function afterPrompts(){
+    const outputHtml = generateHTML(employeeArray);
+
+    fs.writeFile(`${employeeArray[0]}.html`, outputHtml, (error) => {
+        if (error) throw error;
+        console.log(`The team profile has been saved to ${employeeArray[0]}.html`)
+    })
+}
+
+userInput();
