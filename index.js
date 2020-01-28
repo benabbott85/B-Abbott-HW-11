@@ -25,15 +25,24 @@ function statusEmployee(){
             type: "input",
             message: "What would you like to to with this Team Member?",
             name: "addName",
-            choices: ["Add", "Remove", "Update", "View All"]
+            choices: ["Add", 
+                    "Remove", 
+                    "Update", 
+                    "View All Employees",
+                    "View Employees By Department",
+                    "View Employees By Role"]
         }).then(function (response){
             if(response.addName === "Add"){
                 addQuestions();
             } else if (response.addName === "Remove"){
                 removeQuestions();
             
-            } else if (response.addName === "View All"){
+            } else if (response.addName === "View All Employees"){
                 viewQuestions();
+            } else if(response.addName === "View Employees By Department"){
+                viewDepartment();
+            } else if (response.addName === "View Employees By Role"){
+                viewRole();
             }
             else {
                 updateQuestions();
@@ -146,7 +155,7 @@ function updateQuestions (){
     });
 }
 
-function viewEmployees(){
+function viewQuestions(){
     inquirer
     .prompt([
         {
@@ -171,5 +180,56 @@ function viewEmployees(){
             statusEmployee();
         }
 
+    })
+}
+
+function viewDepartment () {
+    inquirer
+    .prompt ([
+        {
+            type: "input",
+            message: "Which deparments employees would you like to see?",
+            name: "departmentEmployees"
+        },
+        {
+            type: "input",
+            message: "Would you like to add, remove, or update another employee?",
+            name: "deparmentContinue",
+            choices: ["yes", "no"]
+        }
+    ]).then (function(response){
+        const deparment = new Department (response.departmentEmployees, response.deparmentContinue);
+        employeeArray.push(department);
+        if (response.departmentContinue === "no"){
+            afterPrompts();
+        } else {
+            statusEmployee();
+        }
+    })
+}
+
+function viewRole (){
+    inquirer
+    .prompt ([
+        {
+            type: "input",
+            message: "Which roles would you like to see a list of?",
+            name: "roleEmloyees"
+        },
+        {
+            type: "input",
+            message: "Would you like to add, remove, or update another employee?",
+            name: "roleContinue",
+            choices: ["yes", "no"]
+        }
+
+    ]).then (function(response){
+        const role = new Role (response.roleEmployees, response.roleContinue);
+        employeeArray.push(role);
+        if (response.roleContinue === "no"){
+            afterPrompts();
+        } else {
+            statusEmployee();
+        }
     })
 }
