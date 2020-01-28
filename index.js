@@ -2,6 +2,14 @@ const inquirer = require("inquirer");
 const mysql = require("mysql");
 const express = require("express");
 
+var connection =mysql.createConnection({
+    host: "localhost",
+    port: 3306,
+    user: "root",
+    password: "4585bryant",
+    database: "employeeDB"
+})
+
 
 const employeeArray= [];
 
@@ -82,7 +90,7 @@ function addQuestions(){
             name: "addContinue",
             choices: ["yes", "no"]
         }
-    ]).then(function (respoonse){
+    ]).then(function (response){
         const update = new Update(response.addEmail, response.addSalary, response.addRole, response.addManager, response.addContinue);
         employeeArray.push(update);
         if (response.addContinie === "no"){
@@ -121,6 +129,10 @@ function removeQuestions (){
             statusEmployee();
         }
     })
+
+    return connection.query (
+        "DELETE FROM employee WHERE id=?"
+    )
 }
 
 function updateQuestions (){
@@ -153,6 +165,10 @@ function updateQuestions (){
             statusEmployee();
         }
     });
+
+    return connection.query(
+        "UPDATE employee SET role_id =?"
+    )
 }
 
 function viewQuestions(){
@@ -181,6 +197,9 @@ function viewQuestions(){
         }
 
     })
+    return connection.query(
+        "SELECT * employee.first_name, employee.last_name, employee.role_id, employee.manager_id FROM employee" 
+    )
 }
 
 function viewDepartment () {
@@ -206,33 +225,40 @@ function viewDepartment () {
             statusEmployee();
         }
     })
+    return connection.query (
+        "SELECT * department.id, department.name FROM department"
+    )
 }
 
 function viewRole (){
-    inquirer
-    .prompt ([
-        {
-            type: "input",
-            message: "Which roles would you like to see a list of?",
-            name: "roleEmloyees"
-        },
-        {
-            type: "input",
-            message: "Would you like to add, remove, or update another employee?",
-            name: "roleContinue",
-            choices: ["yes", "no"]
-        }
+//     inquirer
+//     .prompt ([
+//         {
+//             type: "input",
+//             message: "Which roles would you like to see a list of?",
+//             name: "roleEmloyees"
+//         },
+//         {
+//             type: "input",
+//             message: "Would you like to add, remove, or update another employee?",
+//             name: "roleContinue",
+//             choices: ["yes", "no"]
+//         }
 
-    ]).then (function(response){
-        const role = new Role (response.roleEmployees, response.roleContinue);
-        employeeArray.push(role);
-        if (response.roleContinue === "no"){
-            afterPrompts();
-        } else {
-            statusEmployee();
-        }
-    })
+//     ]).then (function(response){
+//         const role = new Role (response.roleEmployees, response.roleContinue);
+//         employeeArray.push(role);
+//         if (response.roleContinue === "no"){
+//             afterPrompts();
+//         } else {
+//             statusEmployee();
+//         }
+//     })
+return connection.query(
+"SELECT * position.title, position.salary, position.department_id FROM position")
 }
+
+
 
 function afterPrompts(){
     const outputHtml = generateHTML(employeeArray);
